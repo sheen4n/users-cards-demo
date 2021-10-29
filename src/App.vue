@@ -1,28 +1,56 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="bg-red-400 h-full p-10 flex flex-col">
+    <h1 class="font-bold mx-auto inline-block text-2xl">Users List</h1>
+    <p class="mx-auto mt-8" v-if="isLoading">Loading Data...</p>
+    <p class="mx-auto mt-8" v-else>Showing {{ usersCount }} users</p>
+    <div class="mt-8">
+      <UserCard v-for="user in usersData" :key="user.id" :user="user" />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import UserCard from './components/UserCard.vue';
+import axios from 'axios';
 
 export default {
   name: 'App',
+  data() {
+    return {
+      usersData: [],
+      isLoading: false,
+    };
+  },
   components: {
-    HelloWorld
-  }
-}
+    UserCard,
+  },
+  computed: {
+    usersCount() {
+      return this.usersData.length;
+    },
+  },
+  methods: {
+    async loadData() {
+      this.isLoading = true;
+      try {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/users');
+        this.usersData = response.data;
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+  },
+  mounted() {
+    this.loadData();
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+html,
+body {
+  height: 100%;
 }
 </style>
