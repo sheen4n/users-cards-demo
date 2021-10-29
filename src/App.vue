@@ -3,7 +3,7 @@
     <h1 class="font-bold mx-auto inline-block text-2xl">Users List</h1>
     <p class="mx-auto mt-8" v-if="isLoading">Loading Data...</p>
     <p class="mx-auto mt-8" v-else>Showing {{ usersCount }} users</p>
-    <div class="mt-8 max-w-screen-2xl mx-auto">
+    <div class="mt-8">
       <UserCard v-for="user in usersData" :key="user.id" :user="user" />
     </div>
   </div>
